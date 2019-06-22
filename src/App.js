@@ -86,12 +86,12 @@ class App extends React.Component {
 
     const city = event.target.elements.city.value;
 
-    const api_call_getCity = await fetch(`http://dataservice.accuweather.com/locations/v1/cities/search?apikey=${API_KEY}&q=${city}`);
+    const api_call_getCity = await fetch(`https://dataservice.accuweather.com/locations/v1/cities/search?apikey=${API_KEY}&q=${city}`);
     const data_getCity = await api_call_getCity.json();
 
     let api_call_getForecast;
     try {
-      api_call_getForecast = await fetch(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${data_getCity[0].Key}?apikey=${API_KEY}&metric=true`);
+      api_call_getForecast = await fetch(`https://dataservice.accuweather.com/forecasts/v1/daily/5day/${data_getCity[0].Key}?apikey=${API_KEY}&metric=true`);
     }
     catch{
       console.error("gion1");
