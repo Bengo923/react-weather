@@ -1,200 +1,90 @@
+import * as $ from 'jquery';
 import React from 'react';
 import WeatherBlock from './components/WeatherBlock';
-
-const API_KEY = "tGRkU6k4fIGjALXgBCqBTNrFKRvWOKhf";
 
 class App extends React.Component {
 
   state = {
-    headlineText: undefined,
-    headlineCategory: undefined,
-    Day: [{
-      hasPrecipitation: undefined,
-      minimumTemperature: undefined,
-      maximumTemperature: undefined,
-      dayIcon: undefined,
-      dayIconPhrase: undefined,
-      dayPrecipitationType: undefined,
-      dayPrecipitationIntensity: undefined,
-      nightIcon: undefined,
-      nightIconPhrase: undefined,
-      nightHasPrecipitation: undefined,
-      nightPrecipitationType: undefined,
-      nightPrecipitationIntensity: undefined
-    },
-    {
-      hasPrecipitation: undefined,
-      minimumTemperature: undefined,
-      maximumTemperature: undefined,
-      dayIcon: undefined,
-      dayIconPhrase: undefined,
-      dayPrecipitationType: undefined,
-      dayPrecipitationIntensity: undefined,
-      nightIcon: undefined,
-      nightIconPhrase: undefined,
-      nightHasPrecipitation: undefined,
-      nightPrecipitationType: undefined,
-      nightPrecipitationIntensity: undefined
-    },
-    {
-      hasPrecipitation: undefined,
-      minimumTemperature: undefined,
-      maximumTemperature: undefined,
-      dayIcon: undefined,
-      dayIconPhrase: undefined,
-      dayPrecipitationType: undefined,
-      dayPrecipitationIntensity: undefined,
-      nightIcon: undefined,
-      nightIconPhrase: undefined,
-      nightHasPrecipitation: undefined,
-      nightPrecipitationType: undefined,
-      nightPrecipitationIntensity: undefined
-    },
-    {
-      hasPrecipitation: undefined,
-      minimumTemperature: undefined,
-      maximumTemperature: undefined,
-      dayIcon: undefined,
-      dayIconPhrase: undefined,
-      dayPrecipitationType: undefined,
-      dayPrecipitationIntensity: undefined,
-      nightIcon: undefined,
-      nightIconPhrase: undefined,
-      nightHasPrecipitation: undefined,
-      nightPrecipitationType: undefined,
-      nightPrecipitationIntensity: undefined
-    },
-    {
-      hasPrecipitation: undefined,
-      minimumTemperature: undefined,
-      maximumTemperature: undefined,
-      dayIcon: undefined,
-      dayIconPhrase: undefined,
-      dayPrecipitationType: undefined,
-      dayPrecipitationIntensity: undefined,
-      nightIcon: undefined,
-      nightIconPhrase: undefined,
-      nightHasPrecipitation: undefined,
-      nightPrecipitationType: undefined,
-      nightPrecipitationIntensity: undefined
+    weather: undefined,
+    dataInfo: {
+      isReady: undefined,
+      isOk: undefined
     }
-    ]
   };
 
   getWeather = async (event) => {
-    event.preventDefault();
 
-    const city = event.target.elements.city.value;
-
-    const api_call_getCity = await fetch(`https://dataservice.accuweather.com/locations/v1/cities/search?apikey=${API_KEY}&q=${city}`);
-    const data_getCity = await api_call_getCity.json();
-
-    let api_call_getForecast;
     try {
-      api_call_getForecast = await fetch(`https://dataservice.accuweather.com/forecasts/v1/daily/5day/${data_getCity[0].Key}?apikey=${API_KEY}&metric=true`);
-    }
-    catch{
-      console.error("gion1");
-    }
+      event.preventDefault();
 
-    const data_getForecast = await api_call_getForecast.json();
-    try {
       this.setState({
-        headlineText: data_getForecast.Headline.Text,
-        headlineCategory: data_getForecast.Headline.Category,
-        Day: [{
-          minimumTemperature: data_getForecast.DailyForecasts[0].Temperature.Minimum.Value,
-          maximumTemperature: data_getForecast.DailyForecasts[0].Temperature.Maximum.Value,
-
-          dayIcon: data_getForecast.DailyForecasts[0].Day.Icon,
-          dayIconPhrase: data_getForecast.DailyForecasts[0].Day.IconPhrase,
-          dayHasPrecipitation: data_getForecast.DailyForecasts[0].Day.HasPrecipitation,
-          dayPrecipitationType: data_getForecast.DailyForecasts[0].Day.PrecipitationType,
-          dayPrecipitationIntensity: data_getForecast.DailyForecasts[0].Day.PrecipitationType,
-
-          nightIcon: data_getForecast.DailyForecasts[0].Night.Icon,
-          nightIconPhrase: data_getForecast.DailyForecasts[0].Night.IconPhrase,
-          nightHasPrecipitation: data_getForecast.DailyForecasts[0].Night.HasPrecipitation,
-          nightPrecipitationType: data_getForecast.DailyForecasts[0].Night.PrecipitationType,
-          nightPrecipitationIntensity: data_getForecast.DailyForecasts[0].Night.PrecipitationType
-        },
-        {
-          minimumTemperature: data_getForecast.DailyForecasts[1].Temperature.Minimum.Value,
-          maximumTemperature: data_getForecast.DailyForecasts[1].Temperature.Maximum.Value,
-
-          dayIcon: data_getForecast.DailyForecasts[1].Day.Icon,
-          dayIconPhrase: data_getForecast.DailyForecasts[1].Day.IconPhrase,
-          dayHasPrecipitation: data_getForecast.DailyForecasts[1].Day.HasPrecipitation,
-          dayPrecipitationType: data_getForecast.DailyForecasts[1].Day.PrecipitationType,
-          dayPrecipitationIntensity: data_getForecast.DailyForecasts[1].Day.PrecipitationType,
-
-          nightIcon: data_getForecast.DailyForecasts[1].Night.Icon,
-          nightIconPhrase: data_getForecast.DailyForecasts[1].Night.IconPhrase,
-          nightHasPrecipitation: data_getForecast.DailyForecasts[1].Night.HasPrecipitation,
-          nightPrecipitationType: data_getForecast.DailyForecasts[1].Night.PrecipitationType,
-          nightPrecipitationIntensity: data_getForecast.DailyForecasts[1].Night.PrecipitationType
-        },
-        {
-          minimumTemperature: data_getForecast.DailyForecasts[2].Temperature.Minimum.Value,
-          maximumTemperature: data_getForecast.DailyForecasts[2].Temperature.Maximum.Value,
-
-          dayIcon: data_getForecast.DailyForecasts[2].Day.Icon,
-          dayIconPhrase: data_getForecast.DailyForecasts[2].Day.IconPhrase,
-          dayHasPrecipitation: data_getForecast.DailyForecasts[2].Day.HasPrecipitation,
-          dayPrecipitationType: data_getForecast.DailyForecasts[2].Day.PrecipitationType,
-          dayPrecipitationIntensity: data_getForecast.DailyForecasts[2].Day.PrecipitationType,
-
-          nightIcon: data_getForecast.DailyForecasts[2].Night.Icon,
-          nightIconPhrase: data_getForecast.DailyForecasts[2].Night.IconPhrase,
-          nightHasPrecipitation: data_getForecast.DailyForecasts[2].Night.HasPrecipitation,
-          nightPrecipitationType: data_getForecast.DailyForecasts[2].Night.PrecipitationType,
-          nightPrecipitationIntensity: data_getForecast.DailyForecasts[2].Night.PrecipitationType
-        },
-        {
-          minimumTemperature: data_getForecast.DailyForecasts[3].Temperature.Minimum.Value,
-          maximumTemperature: data_getForecast.DailyForecasts[3].Temperature.Maximum.Value,
-
-          dayIcon: data_getForecast.DailyForecasts[3].Day.Icon,
-          dayIconPhrase: data_getForecast.DailyForecasts[3].Day.IconPhrase,
-          dayHasPrecipitation: data_getForecast.DailyForecasts[3].Day.HasPrecipitation,
-          dayPrecipitationType: data_getForecast.DailyForecasts[3].Day.PrecipitationType,
-          dayPrecipitationIntensity: data_getForecast.DailyForecasts[3].Day.PrecipitationType,
-
-          nightIcon: data_getForecast.DailyForecasts[3].Night.Icon,
-          nightIconPhrase: data_getForecast.DailyForecasts[3].Night.IconPhrase,
-          nightHasPrecipitation: data_getForecast.DailyForecasts[3].Night.HasPrecipitation,
-          nightPrecipitationType: data_getForecast.DailyForecasts[3].Night.PrecipitationType,
-          nightPrecipitationIntensity: data_getForecast.DailyForecasts[3].Night.PrecipitationType
-        },
-        {
-          minimumTemperature: data_getForecast.DailyForecasts[4].Temperature.Minimum.Value,
-          maximumTemperature: data_getForecast.DailyForecasts[4].Temperature.Maximum.Value,
-
-          dayIcon: data_getForecast.DailyForecasts[4].Day.Icon,
-          dayIconPhrase: data_getForecast.DailyForecasts[4].Day.IconPhrase,
-          dayHasPrecipitation: data_getForecast.DailyForecasts[4].Day.HasPrecipitation,
-          dayPrecipitationType: data_getForecast.DailyForecasts[4].Day.PrecipitationType,
-          dayPrecipitationIntensity: data_getForecast.DailyForecasts[4].Day.PrecipitationType,
-
-          nightIcon: data_getForecast.DailyForecasts[4].Night.Icon,
-          nightIconPhrase: data_getForecast.DailyForecasts[4].Night.IconPhrase,
-          nightHasPrecipitation: data_getForecast.DailyForecasts[4].Night.HasPrecipitation,
-          nightPrecipitationType: data_getForecast.DailyForecasts[4].Night.PrecipitationType,
-          nightPrecipitationIntensity: data_getForecast.DailyForecasts[4].Night.PrecipitationType
+        dataInfo: {
+          isReady: false,
+          isOk: undefined
         }
-        ]
       });
+
+      const API_KEY = "a078070d87bfadcc95fcc5c5904fad04";
+
+      const UNIT = 'metric';
+      const CITY = event.target.elements.city.value;
+
+      const CORS_URL = 'https://cors-anywhere.herokuapp.com/';
+      const URL = `https://api.openweathermap.org/data/2.5/weather?q=${CITY}&units=${UNIT}&appid=${API_KEY}&lang=ro`
+
+      const NOW_WEATHER = await fetch(CORS_URL + URL)
+        .then(async (res) => {
+          if (res.status !== 200) {
+            throw new Error("Not 200 response, it's unable to find the city")
+          }
+          else {
+            return await res.json();
+          }
+        })
+        .catch(err => {
+          console.error(err);
+        });
+
+
+      console.log(NOW_WEATHER);
+
+      this.setState({
+        weather: NOW_WEATHER,
+        dataInfo: {
+          isReady: true
+        }
+      });
+
+      // check if it got the data without getting an error
+      if (NOW_WEATHER.cod != '404') {
+        this.setState({
+          dataInfo: {
+            isReady: true,
+            isOk: true
+          }
+        });
+      }
+      else {
+        this.setState({
+          dataInfo: {
+            isReady: true,
+            isOk: false
+          }
+        });
+      }
     }
-    catch{
-      console.error("gion");
+    catch (err) {
+      console.log(err);
     }
   };
   render() {
     return (
       <div>
         <React.StrictMode>
-          <WeatherBlock getWeather={this.getWeather}
-            weather={this.state}
+          <WeatherBlock
+            getWeather={this.getWeather}
+            weather={this.state.weather}
+            dataInfo={this.state.dataInfo}
           />
         </React.StrictMode>
       </div>

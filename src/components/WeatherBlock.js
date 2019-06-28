@@ -18,11 +18,25 @@ class WeatherBlock extends React.Component {
         return weekDay[(d + n) % 7];
     }
 
-    render() {
-        return (
-            <div>
-                <h1>Afla vremea.</h1>
-                <Form getWeather={this.props.getWeather} />
+    information() {
+        if (this.props.dataInfo.isReady && this.props.dataInfo.isOk) {
+            return (
+                <div style={{ textAlign: "center" }}>
+                    <span style={{ fontSize: 20 }}>{this.props.weather.name}</span>
+                    <span style={{ fontSize: 17 }}>{', ' + this.props.weather.sys.country}</span>
+                    <br />
+                    <span style={{ fontSize: 15 }}>{this.getDay(0)}</span>
+                </div>
+            );
+        }
+        else {
+            return;
+        }
+    }
+
+    weatherCards() {
+        if (this.props.dataInfo.isReady && this.props.dataInfo.isOk) {
+            return (
                 <div>
                     <WeatherCard
                         day={this.getDay(0)}
@@ -45,6 +59,27 @@ class WeatherBlock extends React.Component {
                         weather={this.props.weather.Day[4]}
                     />
                 </div>
+            );
+        }
+        else {
+            return;
+        }
+    }
+
+    divStyling = {
+        border: "1px",
+        borderStyle: "dashed",
+        borderColor: "black"
+    }
+
+    render() {
+        return (
+            <div>
+                <Form getWeather={this.props.getWeather} />
+                <div style={this.divStyling}>
+                    {this.information()}
+                </div>
+                {/* {this.weatherCards()} */}
             </div>
         );
     };
