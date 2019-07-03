@@ -13,11 +13,11 @@ class NavBar extends React.Component {
                     <Nav.Link href="#home">Home</Nav.Link>
                 </Nav>
 
-                <Form onSubmit={this.props.onSubmitCitySearchForm} inline={true}>
+                <Form onChange={this.props.onChangeCitySearchForm} onSubmit={this.props.onSubmitCitySearchForm} inline={true}>
                     <FormControl id="citySearchForm" type="text" name="citySearch" placeholder="Get weather for the city..." className="mr-sm-2" />
                     <Button type="submit" variant="outline-info">Search</Button>
                 </Form>
-            </Navbar >
+            </Navbar>
         );
     }
 }

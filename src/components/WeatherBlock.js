@@ -33,10 +33,6 @@ class WeatherBlock extends React.Component {
     }
     // #endregion 
 
-    displayInfo() {
-
-    }
-
     weatherCards() {
         if (this.checkData()) {
             return (
@@ -66,46 +62,58 @@ class WeatherBlock extends React.Component {
         }
     }
 
-    getInformationDivStyle() {
+    setInformationDivClass() {
         if (this.checkDataIsReady() !== undefined) {
-            return ({
-                border: "1px",
-                borderStyle: "dashed",
-                borderColor: "black"
-            })
+            return 'informationDiv-ready';
         }
         else {
             return;
         }
     }
 
-    loadWeatherIconsJSON() {
-        const iconsJSON = fetch('../assets/json/weatherIcons.json');
-        console.log()
+    getWeatherIcon(id) {
+        if (this.props.areIconsLoaded === true) {
+            for (let i = 0; i < this.props.weatherIcons.length; i++) {
+                const icon = this.props.weatherIcons[i];
+                if (icon.id === id) {
+                    return icon.svg;
+                }
+            }
+        }
+        return;
     }
 
     render() {
         return (
-            <div style={this.getInformationDivStyle()}>
+            <div id="informationDiv" className={this.setInformationDivClass()}>
                 {/* check if it the data is loading, if yes then it shows a loading GIF */}
                 {(() => {
                     if (this.checkDataIsReady() === false) {
-                        return <img alt={"loading GIF"} width="100px" src={loadingGif} className="centerImage" />
+                        return <img className='centerImage' alt={"loading GIF"} width="100px" src={loadingGif} />
                     }
                 })()}
                 {/* check if the data is returned, if yes its shows the weather information (card) */}
                 {(() => {
                     if (this.checkData()) {
                         return (
-                            <div style={{ textAlign: "center" }}>
-                                <span style={{ fontSize: 20 }}>{this.props.weather.name}</span>
-                                <span style={{ fontSize: 17 }}>{', ' + this.props.weather.sys.country}</span> <br />
-                                <span style={{ fontSize: 15 }}>{this.getDay(0) + ", " + moment.unix(this.props.weather.dt).format("HH:00")}</span> <br />
-                                <span style={{ fontSize: 15 }}>{(() => {
-                                    let description = this.props.weather.weather[0].description;
-                                    return description.charAt(0).toUpperCase() + description.slice(1);
-                                })()}
-                                </span>
+                            <div>
+                                <div style={{ textAlign: "center" }}>
+                                    <span style={{ fontSize: 20 }}>{this.props.weather.name}</span>
+                                    <span style={{ fontSize: 17 }}>{', ' + this.props.weather.sys.country}</span>
+                                    <br />
+                                    <span style={{ fontSize: 15 }}>{this.getDay(0) + ", " + moment.unix(this.props.weather.dt).format("HH:00")}</span>
+                                    <br />
+                                </div>
+                                <div>
+                                    <span className='pl-4' style={{ fontSize: 24 }}>{(() => {
+                                        let description = this.props.weather.weather[0].description;
+                                        return description.charAt(0).toUpperCase() + description.slice(1);
+                                    })()}
+                                    </span>
+                                    <br />
+                                    <img width="100" src={this.getWeatherIcon(this.props.weather.weather[0].id)} alt="weather icon" />
+                                    <span>{Math.floor(this.props.weather.main.temp)} °C</span>
+                                </div>
                             </div>
                         );
                     }
