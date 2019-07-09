@@ -18,6 +18,7 @@ class App extends React.Component {
     weatherIcons: []
   };
 
+  // TODO: resolve bug, getWeatherIcons runs multiple times instead of once per search
   onChangeCitySearchForm = async () => {
     if (this.state.areIconsLoaded !== true) {
       this.setState({
@@ -47,9 +48,9 @@ class App extends React.Component {
       const API_KEY = "a078070d87bfadcc95fcc5c5904fad04";
 
       const UNIT = 'metric';
-      const CITY = $("#citySearchForm").val();
-
-      const CORS_URL = 'https://cors-anywhere-bengo.herokuapp.com/';
+      const CITY = $.trim($("#citySearchForm").val());
+      console.log(CITY);
+      const CORS_URL = 'https://octavianregatun-cors-anywhere.herokuapp.com/';
       const URL = `https://api.openweathermap.org/data/2.5/weather?q=${CITY}&units=${UNIT}&appid=${API_KEY}&lang=ro`
 
       this.setState({

@@ -1,11 +1,10 @@
 import React from 'react';
 import WeatherCard from './WeatherCard';
-import loadingGif from '../assets/gifs/weatherLoading.gif'
-import * as moment from 'moment';
-import './WeatherBlock.css'
+import ConditionalWeatherLoadingGif from './WeatherLoadingGif';
+import WeatherInformation from './WeatherInformation';
 
 class WeatherBlock extends React.Component {
-    getDay(n) {
+    getDay = (n) => {
         let d = new Date().getDay();
         let weekDay = new Array(7);
         weekDay[0] = "Duminica";
@@ -17,6 +16,10 @@ class WeatherBlock extends React.Component {
         weekDay[6] = "Sambata";
 
         return weekDay[(d + n) % 7];
+    }
+
+    styling = {
+        informationDiv: undefined
     }
 
     // #region checkData
@@ -62,16 +65,22 @@ class WeatherBlock extends React.Component {
         }
     }
 
-    setInformationDivClass() {
+    setInformationDivStyle() {
         if (this.checkDataIsReady() !== undefined) {
-            return 'informationDiv-ready';
+            this.styling.informationDiv = {
+                border: '1px',
+                borderStyle: 'dashed',
+                borderColor: 'black'
+            }
+            console.log(this.styling);
         }
         else {
+            console.log(this.styling);
             return;
         }
     }
 
-    getWeatherIcon(id) {
+    getWeatherIcon = (id) => {
         if (this.props.areIconsLoaded === true) {
             for (let i = 0; i < this.props.weatherIcons.length; i++) {
                 const icon = this.props.weatherIcons[i];
@@ -84,40 +93,20 @@ class WeatherBlock extends React.Component {
     }
 
     render() {
+        this.setInformationDivStyle();
         return (
-            <div id="informationDiv" className={this.setInformationDivClass()}>
-                {/* check if it the data is loading, if yes then it shows a loading GIF */}
-                {(() => {
-                    if (this.checkDataIsReady() === false) {
-                        return <img className='centerImage' alt={"loading GIF"} width="100px" src={loadingGif} />
-                    }
-                })()}
+            <div id="informationDiv" style={this.styling.informationDiv}>
+                <ConditionalWeatherLoadingGif
+                    checkDataIsReady={this.checkDataIsReady()}
+                />
+                <WeatherInformation
+                    weather={this.props.weather}
+                    checkData={this.checkData()}
+                    getDay={this.getDay}
+                    getWeatherIcon={this.getWeatherIcon}
+                />
                 {/* check if the data is returned, if yes its shows the weather information (card) */}
-                {(() => {
-                    if (this.checkData()) {
-                        return (
-                            <div>
-                                <div style={{ textAlign: "center" }}>
-                                    <span style={{ fontSize: 20 }}>{this.props.weather.name}</span>
-                                    <span style={{ fontSize: 17 }}>{', ' + this.props.weather.sys.country}</span>
-                                    <br />
-                                    <span style={{ fontSize: 15 }}>{this.getDay(0) + ", " + moment.unix(this.props.weather.dt).format("HH:00")}</span>
-                                    <br />
-                                </div>
-                                <div>
-                                    <span className='pl-4' style={{ fontSize: 24 }}>{(() => {
-                                        let description = this.props.weather.weather[0].description;
-                                        return description.charAt(0).toUpperCase() + description.slice(1);
-                                    })()}
-                                    </span>
-                                    <br />
-                                    <img width="100" src={this.getWeatherIcon(this.props.weather.weather[0].id)} alt="weather icon" />
-                                    <span>{Math.floor(this.props.weather.main.temp)} °C</span>
-                                </div>
-                            </div>
-                        );
-                    }
-                })()}
+
             </div>
             // {/* {this.weatherCards()} */ }
         );
